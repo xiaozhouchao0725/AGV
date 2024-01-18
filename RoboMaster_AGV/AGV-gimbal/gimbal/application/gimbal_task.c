@@ -207,8 +207,8 @@ void gimbal_task(void const *pvParameters)
                 else
                 {
                     CAN_cmd_gimbal(gimbal_control.gimbal_yaw_motor.given_current, -gimbal_control.gimbal_pitch_motor.given_current);
-                    can_can_comm_referee((int16_t)(power_heat_data_t.chassis_power*100),power_heat_data_t.chassis_power_buffer,
-		                                    0/*gimbal_control.key_C*/,robot_state.chassis_power_limit);
+//                    can_can_comm_referee((int16_t)(power_heat_data_t.chassis_power*100),power_heat_data_t.chassis_power_buffer,
+//		                                    0/*gimbal_control.key_C*/,robot_state.chassis_power_limit);
                 }
             }
 

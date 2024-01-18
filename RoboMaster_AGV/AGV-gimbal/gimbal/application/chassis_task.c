@@ -100,6 +100,8 @@ void chassis_task(void const *pvParameters)
             {
                 // 发送控制数据
                 can_comm_board(chassis_move.chassis_relative_ecd, chassis_move.vx_set, chassis_move.vy_set, chassis_move.chassis_behaviour);
+				 can_can_comm_referee((int16_t)(power_heat_data_t.chassis_power*100),power_heat_data_t.chassis_power_buffer,
+		                                    0/*gimbal_control.key_C*/,robot_state.chassis_power_limit);
             }
             // 系统延时
             vTaskDelay(CHASSIS_CONTROL_TIME_MS);
@@ -241,12 +243,12 @@ static void chassis_set_mode(chassis_move_t *chassis_move_mode)
         // chassis_move_mode->chassis_behaviour = CHASSIS_ZERO_FORCE;
         chassis_move_mode->chassis_behaviour = CHASSIS_NO_MOVE;
     }
-    else
-    {
-        //其他底盘无力
-        // chassis_move_mode->chassis_behaviour = CHASSIS_ZERO_FORCE;
-        chassis_move_mode->chassis_behaviour = CHASSIS_NO_MOVE;
-    }
+//    else
+//    {
+//        //其他底盘无力
+//        // chassis_move_mode->chassis_behaviour = CHASSIS_ZERO_FORCE;
+//        chassis_move_mode->chassis_behaviour = CHASSIS_NO_MOVE;
+//    }
     //when gimbal in some mode, such as init mode, chassis must's move
     //当云台在某些模式下，像初始化， 底盘不动
     if (gimbal_cmd_to_chassis_stop())

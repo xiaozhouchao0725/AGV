@@ -26,6 +26,7 @@
 #include "detect_task.h"
 #include "pid.h"
 #include "stm32.h"
+#include "vision_task.h"
 /*----------------------------------宏定义---------------------------*/
 #define shoot_laser_on()    laser_on()      //激光开启宏定义
 #define shoot_laser_off()   laser_off()     //激光关闭宏定义
@@ -86,6 +87,7 @@ extern ExtY_stm32 stm32_Y;
 extern ExtU_stm32 stm32_U;
 extern ext_game_robot_state_t robot_state;
 extern ext_power_heat_data_t power_heat_data_t;
+extern vision_control_t vision_control;
 /*---------------------------------------------------------------------*/
 
 /**
@@ -180,7 +182,7 @@ void shoot_level(void)
 			{ 
 				KH=1.1;
 				ShootSpeed=30;
-				fric=1.90f;//2.95f; 
+				fric=2.95f; 
 				trigger_motor.speed_set=-10.0;
 			}
 			else
@@ -386,7 +388,7 @@ void shoot_control_loop(void)
 static void shoot_bullet_control(void)
 {  
 
-	if((robot_state.shooter_id1_17mm_cooling_limit-power_heat_data_t.shooter_id1_17mm_cooling_heat>KH*robot_state.shooter_id1_17mm_cooling_rate)||fric_move.shoot_rc->rc.ch[4]>50) 
+	if((robot_state.shooter_id1_17mm_cooling_limit-power_heat_data_t.shooter_id1_17mm_cooling_heat>KH*robot_state.shooter_id1_17mm_cooling_rate)||fric_move.shoot_rc->rc.ch[4]>50 && (fabs(vision_control.gimbal_vision_control.gimbal_pitch - vision_control.imu_absolution_angle.pitch) <= ALLOW_ATTACK_ERROR && fabs(vision_control.gimbal_vision_control.gimbal_yaw - vision_control.imu_absolution_angle.yaw) <= ALLOW_ATTACK_ERROR)) 
 	{
 		 if ( shoot_mode == SHOOT_BULLET&&trigger_motor.move_flag ==1&&flag==0)
 		 {

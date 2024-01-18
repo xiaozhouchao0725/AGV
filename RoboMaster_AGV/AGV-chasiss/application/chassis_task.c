@@ -973,23 +973,23 @@ void chassis_rc_to_control_vector(fp32 *vx_set, fp32 *vy_set, chassis_move_t *ch
 		ky = 1.5f;
 		kw = 1.0f;
 	}
-	// first order low-pass replace ramp function, calculate chassis speed set-point to improve control performance
-	// 一阶低通滤波代替斜波作为底盘速度输入
+//	// first order low-pass replace ramp function, calculate chassis speed set-point to improve control performance
+//	// 一阶低通滤波代替斜波作为底盘速度输入
 
-//	first_order_filter_cali(&chassis_move_rc_to_vector->chassis_cmd_slow_set_vx, -chassis_move_rc_to_vector->vx_set_CANsend/100);
-//	first_order_filter_cali(&chassis_move_rc_to_vector->chassis_cmd_slow_set_vy, -chassis_move_rc_to_vector->vy_set_CANsend/100);
+	first_order_filter_cali(&chassis_move_rc_to_vector->chassis_cmd_slow_set_vx, -chassis_move_rc_to_vector->vx_set_CANsend/100);
+	first_order_filter_cali(&chassis_move_rc_to_vector->chassis_cmd_slow_set_vy, -chassis_move_rc_to_vector->vy_set_CANsend/100);
 
-    ramp_calc(&chassis_move_rc_to_vector->vx_ramp, -chassis_move_rc_to_vector->vx_set_CANsend/100);
-    ramp_calc(&chassis_move_rc_to_vector->vy_ramp, -chassis_move_rc_to_vector->vy_set_CANsend/100);
+//    ramp_calc(&chassis_move_rc_to_vector->vx_ramp, -chassis_move_rc_to_vector->vx_set_CANsend/100);
+//    ramp_calc(&chassis_move_rc_to_vector->vy_ramp, -chassis_move_rc_to_vector->vy_set_CANsend/100);
 
-	*vx_set += chassis_move_rc_to_vector->vx_ramp.out;
-	*vy_set += chassis_move_rc_to_vector->vy_ramp.out;
+//	*vx_set += chassis_move_rc_to_vector->vx_ramp.out;
+//	*vy_set += chassis_move_rc_to_vector->vy_ramp.out;
 	
-//	if(fabs(chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out)<0.1 ) chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out=0;
-//	if(fabs(chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out)<0.1 ) chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out=0;
-//	
-//	*vx_set += chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out;
-//	*vy_set += chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out;
+	if(fabs(chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out)<0.1 ) chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out=0;
+	if(fabs(chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out)<0.1 ) chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out=0;
+	
+	*vx_set += chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out;
+	*vy_set += chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out;
 	
 	*vx_set = kx * (*vx_set);
 	*vy_set = ky * (*vy_set);
@@ -1003,7 +1003,9 @@ void chassis_rc_to_control_vector(fp32 *vx_set, fp32 *vy_set, chassis_move_t *ch
 
     vx_set_channel = vx_channel * CHASSIS_VX_RC_SEN;
     vy_set_channel = vy_channel * -CHASSIS_VY_RC_SEN;
-
+	
+	 vx_set_channel = *vx_set;
+	vy_set_channel = *vy_set ;
     //键盘控制
     if (chassis_move_rc_to_vector->chassis_rc_ctrl->key.v & CHASSIS_FRONT_KEY)
     {
@@ -1044,6 +1046,29 @@ void chassis_rc_to_control_vector(fp32 *vx_set, fp32 *vy_set, chassis_move_t *ch
 				*vx_set = 0.0f;
 				*vy_set = 0.0f;
 		}
+
+
+//// first order low-pass replace ramp function, calculate chassis speed set-point to improve control performance
+//	// 一阶低通滤波代替斜波作为底盘速度输入
+
+//	first_order_filter_cali(&chassis_move_rc_to_vector->chassis_cmd_slow_set_vx, -chassis_move_rc_to_vector->vx_set_CANsend/100);
+//	first_order_filter_cali(&chassis_move_rc_to_vector->chassis_cmd_slow_set_vy, -chassis_move_rc_to_vector->vy_set_CANsend/100);
+
+////    ramp_calc(&chassis_move_rc_to_vector->vx_ramp, -chassis_move_rc_to_vector->vx_set_CANsend/100);
+////    ramp_calc(&chassis_move_rc_to_vector->vy_ramp, -chassis_move_rc_to_vector->vy_set_CANsend/100);
+
+////	*vx_set += chassis_move_rc_to_vector->vx_ramp.out;
+////	*vy_set += chassis_move_rc_to_vector->vy_ramp.out;
+//	
+//	if(fabs(chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out)<0.1 ) chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out=0;
+//	if(fabs(chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out)<0.1 ) chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out=0;
+//	
+//	*vx_set += chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out;
+//	*vy_set += chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out;
+//	
+//	*vx_set = kx * (*vx_set);
+//	*vy_set = ky * (*vy_set);
+
 
 }
 /**
