@@ -155,7 +155,7 @@ static void chassis_set_mode(chassis_move_t *chassis_move_mode)
     }
     // remote control  set chassis behaviour mode
     // 遥控器设置模式
-    if (switch_is_down(chassis_move_mode->chassis_RC->rc.s[CHASSIS_MODE_CHANNEL]))
+/*     if (switch_is_down(chassis_move_mode->chassis_RC->rc.s[CHASSIS_MODE_CHANNEL]))
     {
         // 遥控器拨到下侧挡位为底盘无力模式
         chassis_move_mode->chassis_behaviour = CHASSIS_ZERO_FORCE;
@@ -177,6 +177,62 @@ static void chassis_set_mode(chassis_move_t *chassis_move_mode)
         {
             // 陀螺
             chassis_move_mode->chassis_behaviour = CHASSIS_SPIN;
+        }
+    } */
+
+
+    	static int mode = 0;
+		if(chassis_move_mode->chassis_RC->key.v & KEY_PRESSED_OFFSET_B )
+		{
+				mode = 1;
+		}
+		if(chassis_move_mode->chassis_RC->key.v & KEY_PRESSED_OFFSET_V )
+		{
+				mode = 2;
+		}
+    //remote control  set chassis behaviour mode
+    //遥控器设置模式
+		if(switch_is_down(chassis_move_mode->chassis_RC->rc.s[CHASSIS_MODE_CHANNEL]))
+		{
+             // 遥控器拨到下侧挡位为底盘无力模式
+        chassis_move_mode->chassis_behaviour = CHASSIS_ZERO_FORCE;
+		}	
+
+        else if (switch_is_mid(chassis_move_mode->chassis_RC->rc.s[CHASSIS_MODE_CHANNEL]) || switch_is_up(chassis_move_mode->chassis_RC->rc.s[CHASSIS_MODE_CHANNEL]))
+        {
+        if(mode == 0){
+                        // 遥控器中挡以及上档为底盘有力模式
+                        if (switch_is_down(chassis_move_mode->chassis_RC->rc.s[CHASSIS_RUN_MODE_CHANNEL]))
+                        {
+                            //舵跟随云台
+                            chassis_move_mode->chassis_behaviour = CHASSIS_RUDDER_FOLLOW_GIMBAL_YAW;
+                        }
+                        else if (switch_is_mid(chassis_move_mode->chassis_RC->rc.s[CHASSIS_RUN_MODE_CHANNEL]))
+                        {
+                            //底盘跟随云台
+                            chassis_move_mode->chassis_behaviour = CHASSIS_FOLLOW_GIMBAL_YAW;
+                        }
+                        else if (switch_is_up(chassis_move_mode->chassis_RC->rc.s[CHASSIS_RUN_MODE_CHANNEL]))
+                        {
+                            // 陀螺
+                            chassis_move_mode->chassis_behaviour = CHASSIS_SPIN;
+                        }
+        }
+	
+        else{
+                        if(mode == 1)
+				{
+						chassis_move_mode->chassis_behaviour = CHASSIS_RUDDER_FOLLOW_GIMBAL_YAW;
+				}
+				else if(mode == 2)
+				{
+						chassis_move_mode->chassis_behaviour = CHASSIS_FOLLOW_GIMBAL_YAW;
+                        }
+											
+						if(chassis_move_mode->chassis_RC->key.v & KEY_PRESSED_OFFSET_SHIFT )
+						{
+								chassis_move_mode->chassis_behaviour = CHASSIS_SPIN;
+						}
         }
     }
     else if (toe_is_error(DBUS_TOE))

@@ -1,9 +1,9 @@
 standard_tpye_c\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
-standard_tpye_c\queue.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdlib.h
-standard_tpye_c\queue.o: D:\MDK5\ARM\ARMCC\Bin\..\include\string.h
+standard_tpye_c\queue.o: C:\Keil_v5\ARM\AC506u7\Bin\..\include\stdlib.h
+standard_tpye_c\queue.o: C:\Keil_v5\ARM\AC506u7\Bin\..\include\string.h
 standard_tpye_c\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-standard_tpye_c\queue.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stddef.h
-standard_tpye_c\queue.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdint.h
+standard_tpye_c\queue.o: C:\Keil_v5\ARM\AC506u7\Bin\..\include\stddef.h
+standard_tpye_c\queue.o: C:\Keil_v5\ARM\AC506u7\Bin\..\include\stdint.h
 standard_tpye_c\queue.o: ../Inc/FreeRTOSConfig.h
 standard_tpye_c\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 standard_tpye_c\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

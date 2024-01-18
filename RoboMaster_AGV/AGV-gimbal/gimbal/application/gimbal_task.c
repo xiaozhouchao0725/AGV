@@ -207,6 +207,8 @@ void gimbal_task(void const *pvParameters)
                 else
                 {
                     CAN_cmd_gimbal(gimbal_control.gimbal_yaw_motor.given_current, -gimbal_control.gimbal_pitch_motor.given_current);
+                    can_can_comm_referee((int16_t)(power_heat_data_t.chassis_power*100),power_heat_data_t.chassis_power_buffer,
+		                                    0/*gimbal_control.key_C*/,robot_state.chassis_power_limit);
                 }
             }
 
@@ -303,10 +305,10 @@ static void gimbal_init(gimbal_control_t *init)
     init->gimbal_auto_scan.scan_pitch_period = PITCH_SCAN_PERIOD;
     init->gimbal_auto_scan.scan_yaw_period = YAW_SCAN_PERIOD;
 
-    //获取云台自动扫描初始化时间
+    /* //获取云台自动扫描初始化时间
     init->gimbal_auto_scan.scan_begin_time = TIME_MS_TO_S(HAL_GetTick());
     //pitch轴扫描中心值
-    init->gimbal_auto_scan.pitch_center_value = init->gimbal_auto_scan.pitch_range;
+    init->gimbal_auto_scan.pitch_center_value = init->gimbal_auto_scan.pitch_range; */
 
     // 设置pitch轴相对角最大值
     init->gimbal_pitch_motor.max_relative_angle = -motor_ecd_to_angle_change(GIMBAL_PITCH_MAX_ENCODE, init->gimbal_pitch_motor.offset_ecd);

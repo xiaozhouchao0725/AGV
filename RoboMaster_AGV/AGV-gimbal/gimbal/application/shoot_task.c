@@ -180,7 +180,7 @@ void shoot_level(void)
 			{ 
 				KH=1.1;
 				ShootSpeed=30;
-				fric=2.95f; 
+				fric=1.90f;//2.95f; 
 				trigger_motor.speed_set=-10.0;
 			}
 			else

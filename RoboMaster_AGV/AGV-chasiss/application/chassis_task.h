@@ -130,6 +130,13 @@
 //底盘设置旋转速度，设置前后左右轮不同设定速度的比例分权 0为在几何中心，不需要补偿
 #define CHASSIS_WZ_SET_SCALE 0.f
 
+//chassi forward, back, left, right key
+//底盘前后左右控制按键
+#define CHASSIS_FRONT_KEY KEY_PRESSED_OFFSET_W
+#define CHASSIS_BACK_KEY KEY_PRESSED_OFFSET_S
+#define CHASSIS_LEFT_KEY KEY_PRESSED_OFFSET_A
+#define CHASSIS_RIGHT_KEY KEY_PRESSED_OFFSET_D
+
 typedef enum
 {
   CHASSIS_VECTOR_FOLLOW_GIMBAL_YAW,   //底盘跟随云台
@@ -275,6 +282,11 @@ typedef struct
 		
 		fp32 rudder_given_current[4];
 		fp32 rudder_speed[4];
+		
+		fp32 vx_max_speed;  //max forward speed, unit m/s.前进方向最大速度 单位m/s
+  fp32 vx_min_speed;  //max backward speed, unit m/s.后退方向最大速度 单位m/s
+  fp32 vy_max_speed;  //max letf speed, unit m/s.左方向最大速度 单位m/s
+  fp32 vy_min_speed;  //max right speed, unit m/s.右方向最大速度 单位m/s
 }chassis_move_t;
 
 

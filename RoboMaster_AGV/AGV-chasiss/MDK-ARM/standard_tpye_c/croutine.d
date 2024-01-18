@@ -1,7 +1,7 @@
 standard_tpye_c\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
 standard_tpye_c\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-standard_tpye_c\croutine.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stddef.h
-standard_tpye_c\croutine.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdint.h
+standard_tpye_c\croutine.o: C:\Keil_v5\ARM\AC506u7\Bin\..\include\stddef.h
+standard_tpye_c\croutine.o: C:\Keil_v5\ARM\AC506u7\Bin\..\include\stdint.h
 standard_tpye_c\croutine.o: ../Inc/FreeRTOSConfig.h
 standard_tpye_c\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 standard_tpye_c\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

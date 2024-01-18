@@ -85,6 +85,8 @@ void can_comm_board(int16_t relative_angle, int16_t chassis_vx, int16_t chassis_
  */
 void can_comm_shoot(int16_t fric1, int16_t fric2, int16_t trigger);
 
+void can_can_comm_referee(int16_t key_1,int32_t key_2, int32_t key_3, int16_t key_other );
+
 bool can_comm_task_init_finish(void);
 
 #endif // !CAN_COMM_TASK_H

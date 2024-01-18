@@ -276,6 +276,12 @@ static void chassis_init(chassis_move_t *chassis_move_init)
 	chassis_move.Back_R.ecd_zero_set = Back_R_ecd;
 	chassis_move.Back_L.ecd_zero_set = Back_L_ecd;
 	chassis_move.power_control.SPEED_MIN = 0.1f;
+	
+	chassis_move_init->vx_max_speed = MAX_WHEEL_SPEED;
+    chassis_move_init->vx_min_speed = -MAX_WHEEL_SPEED;
+
+    chassis_move_init->vy_max_speed = MAX_WHEEL_SPEED;
+    chassis_move_init->vy_min_speed = -MAX_WHEEL_SPEED;
 }
 
 /**
@@ -987,6 +993,58 @@ void chassis_rc_to_control_vector(fp32 *vx_set, fp32 *vy_set, chassis_move_t *ch
 	
 	*vx_set = kx * (*vx_set);
 	*vy_set = ky * (*vy_set);
+	
+	   
+    int16_t vx_channel, vy_channel;
+    fp32 vx_set_channel, vy_set_channel;
+    //死区限制，因为遥控器可能存在差异 摇杆在中间，其值不为0
+    rc_deadline_limit(chassis_move_rc_to_vector->chassis_rc_ctrl->rc.ch[CHASSIS_X_CHANNEL], vx_channel, CHASSIS_RC_DEADLINE);
+    rc_deadline_limit(chassis_move_rc_to_vector->chassis_rc_ctrl->rc.ch[CHASSIS_Y_CHANNEL], vy_channel, CHASSIS_RC_DEADLINE);
+
+    vx_set_channel = vx_channel * CHASSIS_VX_RC_SEN;
+    vy_set_channel = vy_channel * -CHASSIS_VY_RC_SEN;
+
+    //键盘控制
+    if (chassis_move_rc_to_vector->chassis_rc_ctrl->key.v & CHASSIS_FRONT_KEY)
+    {
+        vx_set_channel = chassis_move_rc_to_vector->vx_max_speed;
+    }
+    else if (chassis_move_rc_to_vector->chassis_rc_ctrl->key.v & CHASSIS_BACK_KEY)
+    {
+        vx_set_channel = chassis_move_rc_to_vector->vx_min_speed;
+    }
+
+    if (chassis_move_rc_to_vector->chassis_rc_ctrl->key.v & CHASSIS_LEFT_KEY)
+    {
+        vy_set_channel = chassis_move_rc_to_vector->vy_max_speed;
+    }
+    else if (chassis_move_rc_to_vector->chassis_rc_ctrl->key.v & CHASSIS_RIGHT_KEY)
+    {
+        vy_set_channel = chassis_move_rc_to_vector->vy_min_speed;
+    }
+	//一阶低通滤波代替斜波作为底盘速度输入
+    first_order_filter_cali(&chassis_move_rc_to_vector->chassis_cmd_slow_set_vx, vx_set_channel);
+    first_order_filter_cali(&chassis_move_rc_to_vector->chassis_cmd_slow_set_vy, vy_set_channel);
+    //停止信号，不需要缓慢加速，直接减速到零
+    if (vx_set_channel < CHASSIS_RC_DEADLINE * CHASSIS_VX_RC_SEN && vx_set_channel > -CHASSIS_RC_DEADLINE * CHASSIS_VX_RC_SEN)
+    {
+        chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out = 0.0f;
+    }
+
+    if (vy_set_channel < CHASSIS_RC_DEADLINE * CHASSIS_VY_RC_SEN && vy_set_channel > -CHASSIS_RC_DEADLINE * CHASSIS_VY_RC_SEN)
+    {
+        chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out = 0.0f;
+    }
+
+    *vx_set = chassis_move_rc_to_vector->chassis_cmd_slow_set_vx.out;
+    *vy_set = chassis_move_rc_to_vector->chassis_cmd_slow_set_vy.out;
+		
+		if(chassis_move_rc_to_vector->chassis_rc_ctrl->key.v & KEY_PRESSED_OFFSET_Z)
+		{
+				*vx_set = 0.0f;
+				*vy_set = 0.0f;
+		}
+
 }
 /**
  * @brief          轮电机动态功率控制
