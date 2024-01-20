@@ -276,7 +276,7 @@ static void Shoot_Feedback_Update(void)
 static void shoot_ready(void)
 {
 	static int flag_shoot;	
-	if(!flag_shoot && ((fric_move.shoot_rc->key.v&KEY_PRESSED_OFFSET_Z)||(switch_is_down(fric_move.shoot_rc->rc.s[0]))))
+	if(!flag_shoot && ((fric_move.shoot_rc->key.v&KEY_PRESSED_OFFSET_R)||(switch_is_down(fric_move.shoot_rc->rc.s[0]))))
 	{		if(std_fric == 0)
 		{
 			Ready_Flag=1;
@@ -288,7 +288,7 @@ static void shoot_ready(void)
 			Ready_Flag=0;
 		}
 	}
-	flag_shoot= ((fric_move.shoot_rc->key.v&KEY_PRESSED_OFFSET_Z)||(switch_is_down(fric_move.shoot_rc->rc.s[0])));
+	flag_shoot= ((fric_move.shoot_rc->key.v&KEY_PRESSED_OFFSET_R)||(switch_is_down(fric_move.shoot_rc->rc.s[0])));
 } 
 /**
 	* @brief          Éä»÷Ä£Ê½ÉèÖÃ

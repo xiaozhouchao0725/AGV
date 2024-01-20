@@ -41,6 +41,7 @@
 #include "stm32_private.h"
 #include "can_comm_task.h"
 #include "chassis_task.h"
+#include "bsp_usart.h"
 // motor enconde value format, range[0-8191]
 // 电机编码值规整 0—8191
 #define ecd_format(ecd)         \
@@ -166,6 +167,7 @@ static fp32 gimbal_motor_second_order_linear_controller_calc(gimbal_motor_second
 extern chassis_move_t chassis_move;
 //云台任务结构体
 gimbal_control_t gimbal_control;
+vision_rxfifo_t *vision_rx;
 
 /**
  * @brief          云台任务，间隔 GIMBAL_CONTROL_TIME 1ms
@@ -250,6 +252,8 @@ static void gimbal_init(gimbal_control_t *init)
 
     const static fp32 gimbal_yaw_auto_scan_order_filter[1] = {GIMBAL_YAW_AUTO_SCAN_NUM};
     const static fp32 gimbal_pitch_auto_scan_order_filter[1] = {GIMBAL_PITCH_AUTO_SCAN_NUM};
+	
+	
 
     // 给底盘跟随云台模式用的
     gimbal_control.gimbal_yaw_motor.zero_ecd_flag = GIMBAL_YAW_LAST_OFFSET_ENCODE;
@@ -313,6 +317,8 @@ static void gimbal_init(gimbal_control_t *init)
     // 设置pitch轴相对角最大值
     init->gimbal_pitch_motor.max_relative_angle = -motor_ecd_to_angle_change(GIMBAL_PITCH_MAX_ENCODE, init->gimbal_pitch_motor.offset_ecd);
     init->gimbal_pitch_motor.min_relative_angle = -motor_ecd_to_angle_change(GIMBAL_PITCH_MIN_ENCODE, init->gimbal_pitch_motor.offset_ecd);
+
+	vision_rx=get_vision_fifo();
 }
 
 /**

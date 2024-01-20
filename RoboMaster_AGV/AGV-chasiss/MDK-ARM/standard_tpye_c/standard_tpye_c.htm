@@ -3,7 +3,7 @@
 <title>Static Call Graph - [standard_tpye_c\standard_tpye_c.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image standard_tpye_c\standard_tpye_c.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Jan 18 13:04:54 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Jan 19 21:45:45 2024
 <BR><P>
 <H3>Maximum Stack Usage =        520 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -3045,7 +3045,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1e2]"></a>chassis_behaviour_control_set</STRONG> (Thumb, 134 bytes, Stack size 24 bytes, chassis_behaviour.o(i.chassis_behaviour_control_set))
-<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = chassis_behaviour_control_set &rArr; chassis_infantry_follow_gimbal_yaw_control &rArr; chassis_rc_to_control_vector &rArr; __aeabi_cdcmple
+<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = chassis_behaviour_control_set &rArr; chassis_infantry_follow_gimbal_yaw_control &rArr; chassis_rc_to_control_vector &rArr; __aeabi_cdcmple
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_zero_force_control
 <LI><a href="#[1e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_no_move_control
@@ -3068,8 +3068,8 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CHASSIC_MOTOR_POWER_CONTROL
 </UL>
 
-<P><STRONG><a name="[1e8]"></a>chassis_rc_to_control_vector</STRONG> (Thumb, 738 bytes, Stack size 48 bytes, chassis_task.o(i.chassis_rc_to_control_vector))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = chassis_rc_to_control_vector &rArr; __aeabi_cdcmple
+<P><STRONG><a name="[1e8]"></a>chassis_rc_to_control_vector</STRONG> (Thumb, 378 bytes, Stack size 32 bytes, chassis_task.o(i.chassis_rc_to_control_vector))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = chassis_rc_to_control_vector &rArr; __aeabi_cdcmple
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;first_order_filter_cali
 <LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_fabs
@@ -4229,7 +4229,7 @@ Local Symbols
 <BR>[Address Reference Count : 1]<UL><LI> calibrate_task.o(.data)
 </UL>
 <P><STRONG><a name="[1e5]"></a>chassis_infantry_follow_gimbal_yaw_control</STRONG> (Thumb, 46 bytes, Stack size 24 bytes, chassis_behaviour.o(i.chassis_infantry_follow_gimbal_yaw_control))
-<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = chassis_infantry_follow_gimbal_yaw_control &rArr; chassis_rc_to_control_vector &rArr; __aeabi_cdcmple
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = chassis_infantry_follow_gimbal_yaw_control &rArr; chassis_rc_to_control_vector &rArr; __aeabi_cdcmple
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_rc_to_control_vector
 </UL>

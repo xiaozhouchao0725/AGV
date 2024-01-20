@@ -19,6 +19,7 @@
 #include "can_comm_task.h"
 #include "gimbal_task.h"
 #include "gimbal_behaviour.h"
+#include "bsp_usart.h"
 #define abs(x) ((x) > 0 ? (x) : (-x))
 
 #define rc_deadband_limit(input, output, dealine)        \
@@ -66,7 +67,7 @@ uint32_t chassis_high_water;
 #endif
 
 extern gimbal_control_t gimbal_control;
-
+extern vision_rxfifo_t *vision_rx;
 chassis_move_t chassis_move;       // 底盘运动数据
 /**
   * @brief          底盘任务，间隔 CHASSIS_CONTROL_TIME_MS 2ms
@@ -275,7 +276,40 @@ static void chassis_set_contorl(chassis_move_t *chassis_move_control)
     vy_set_channel_RC = vy_channel_RC * CHASSIS_VY_RC_SEN;
 
     //设置速度
-    chassis_move_control->vx_set = vx_set_channel_RC;
-    chassis_move_control->vy_set = vy_set_channel_RC;
-}
+    chassis_move_control->vx_set += vx_set_channel_RC;
+    chassis_move_control->vy_set += vy_set_channel_RC;
 
+    
+			if (chassis_move_control->chassis_RC->key.v & KEY_PRESSED_OFFSET_A)
+			{
+	
+					chassis_move_control->vy_set = -550;
+			}
+			else if (chassis_move_control->chassis_RC->key.v & KEY_PRESSED_OFFSET_D)
+			{
+
+					chassis_move_control->vy_set = 550;
+			}
+			else
+			{
+        chassis_move_control->vy_set = 0;
+			}
+			
+			if (chassis_move_control->chassis_RC->key.v &  KEY_PRESSED_OFFSET_W)
+			{
+
+					chassis_move_control->vx_set = 600;
+			}
+			else if (chassis_move_control->chassis_RC->key.v &  KEY_PRESSED_OFFSET_S)
+			{
+
+					chassis_move_control->vx_set = -600;
+			}
+			else
+			{
+        chassis_move_control->vx_set = 0;
+}
+			    //设置速度
+    chassis_move_control->vx_set += vx_set_channel_RC;
+    chassis_move_control->vy_set += vy_set_channel_RC;
+}
