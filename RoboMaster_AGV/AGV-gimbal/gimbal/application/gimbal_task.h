@@ -96,7 +96,7 @@
 #define TEST_KEYBOARD KEY_PRESSED_OFFSET_R
 //rocker value deadband
 //遥控器输入死区，因为遥控器存在差异，摇杆在中间，其值不一定为零
-#define RC_DEADBAND   15
+#define RC_DEADBAND   20
 
 
 #define YAW_RC_SEN    -0.000005f
@@ -166,7 +166,7 @@
 //云台pitch轴中值
 #define GIMBAL_PITCH_OFFSET_ENCODE 1973
 //云台yaw轴中值
-#define GIMBAL_YAW_OFFSET_ENCODE 2397
+#define GIMBAL_YAW_OFFSET_ENCODE 2379
 //yaw轴后侧中值
 #define GIMBAL_YAW_LAST_OFFSET_ENCODE (((GIMBAL_YAW_OFFSET_ENCODE + HALF_ECD_RANGE) > ECD_RANGE) ? (GIMBAL_YAW_OFFSET_ENCODE + HALF_ECD_RANGE - ECD_RANGE) : (GIMBAL_YAW_OFFSET_ENCODE + HALF_ECD_RANGE))
 //云台yaw轴陀螺仪误差

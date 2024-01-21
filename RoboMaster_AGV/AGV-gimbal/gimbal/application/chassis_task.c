@@ -309,7 +309,18 @@ static void chassis_set_contorl(chassis_move_t *chassis_move_control)
 			{
         chassis_move_control->vx_set = 0;
 }
-			    //设置速度
-    chassis_move_control->vx_set += vx_set_channel_RC;
-    chassis_move_control->vy_set += vy_set_channel_RC;
+//			    //设置速度
+//    chassis_move_control->vx_set += vx_set_channel_RC;
+//    chassis_move_control->vy_set += vy_set_channel_RC;
+    if(vision_rx->vx != 0  ||  vision_rx->vy!= 0)
+	{
+    chassis_move_control->vx_set = (vision_rx->vx)*2;
+    chassis_move_control->vy_set = (vision_rx->vy)*2;
+	}
+	else
+	{
+	chassis_move_control->vx_set += vx_set_channel_RC;
+    chassis_move_control->vy_set += vy_set_channel_RC;	
+	}
+
 }

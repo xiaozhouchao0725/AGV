@@ -48,7 +48,7 @@
 #include "bsp_buzzer.h"
 #include "detect_task.h"
 #include "user_lib.h"
-
+#include "bsp_usart.h"
 #define int_abs(x) ((x) > 0 ? (x) : (-x))
 
 /**
@@ -155,7 +155,7 @@ fp32 Pitch_Set[8]={0};
 /*----------------------------------外部变量---------------------------*/
 //云台初始化完毕标志位
 bool_t gimbal_init_finish_flag = 0;
-
+extern vision_rxfifo_t *vision_rx;
 
 
 /**
@@ -503,15 +503,23 @@ static void gimbal_RC_control(fp32 *yaw, fp32 *pitch, gimbal_control_t *gimbal_c
     rc_add_yaw_RC = yaw_channel_RC * YAW_RC_SEN;
     rc_add_pit_RC = -pitch_channel_RC * PITCH_RC_SEN;
 	
-	    // 键盘控制
+	// 键盘控制
     rc_deadband_limit(gimbal_control_set->gimbal_rc_ctrl->mouse.x, yaw_channel, 0);
     rc_deadband_limit(gimbal_control_set->gimbal_rc_ctrl->mouse.y, pitch_channel, 0);
 
     rc_add_yaw = -yaw_channel * YAW_MOUSE_SEN;
     rc_add_pit = pitch_channel * PITCH_MOUSE_SEN;
-		
-    *yaw =rc_add_yaw  +rc_add_yaw_RC *0.8;
-    *pitch = (rc_add_pit + rc_add_pit_RC)*0.8;
+	
+	if(	vision_rx->ang_z != 0)
+	{
+    *yaw = ((vision_rx->ang_z)*0.000264f)*1; //rc_add_yaw  +rc_add_yaw_RC *0.8;
+    *pitch = (rc_add_pit + rc_add_pit_RC)*0.8; 
+	}
+	else
+	{
+	*yaw = 	rc_add_yaw  +rc_add_yaw_RC *0.8;
+	*pitch = (rc_add_pit + rc_add_pit_RC)*0.8; 	
+	}
 }
 
 /**

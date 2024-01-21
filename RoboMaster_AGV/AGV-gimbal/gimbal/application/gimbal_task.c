@@ -167,6 +167,7 @@ static fp32 gimbal_motor_second_order_linear_controller_calc(gimbal_motor_second
 extern chassis_move_t chassis_move;
 //云台任务结构体
 gimbal_control_t gimbal_control;
+
 vision_rxfifo_t *vision_rx;
 
 /**
@@ -319,6 +320,9 @@ static void gimbal_init(gimbal_control_t *init)
     init->gimbal_pitch_motor.min_relative_angle = -motor_ecd_to_angle_change(GIMBAL_PITCH_MIN_ENCODE, init->gimbal_pitch_motor.offset_ecd);
 
 	vision_rx=get_vision_fifo();
+	
+//	vision_rx->vx = 0.3f;
+//	vision_rx->ang_z = 0.3f;
 }
 
 /**
