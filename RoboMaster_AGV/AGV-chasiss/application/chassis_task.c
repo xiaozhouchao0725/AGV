@@ -1105,8 +1105,8 @@ void chassis_power_move_control(chassis_move_t *chassis_motor)
 	//			}
 	//			else
 	//			{
-	chassis_motor->power_control.K = 400;
-	chassis_motor->power_control.POWER_MAX = 80;
+	chassis_motor->power_control.K = 400;//1000
+	chassis_motor->power_control.POWER_MAX = 80;//150
 	power_charge = 10000;
 	//			}
 	//		}

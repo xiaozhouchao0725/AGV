@@ -88,6 +88,7 @@ extern ExtU_stm32 stm32_U;
 extern ext_game_robot_state_t robot_state;
 extern ext_power_heat_data_t power_heat_data_t;
 extern vision_control_t vision_control;
+extern gimbal_behaviour_e gimbal_behaviour;
 /*---------------------------------------------------------------------*/
 
 /**
@@ -277,7 +278,8 @@ static void shoot_ready(void)
 {
 	static int flag_shoot;	
 	if(!flag_shoot && ((fric_move.shoot_rc->key.v&KEY_PRESSED_OFFSET_R)||(switch_is_down(fric_move.shoot_rc->rc.s[0]))))
-	{		if(std_fric == 0)
+	{		
+		if(std_fric == 0)
 		{
 			Ready_Flag=1;
 			std_fric=!std_fric;
@@ -388,9 +390,15 @@ void shoot_control_loop(void)
 static void shoot_bullet_control(void)
 {  
 
-	if((robot_state.shooter_id1_17mm_cooling_limit-power_heat_data_t.shooter_id1_17mm_cooling_heat>KH*robot_state.shooter_id1_17mm_cooling_rate)||fric_move.shoot_rc->rc.ch[4]>50 && (fabs(vision_control.gimbal_vision_control.gimbal_pitch - vision_control.imu_absolution_angle.pitch) <= ALLOW_ATTACK_ERROR && fabs(vision_control.gimbal_vision_control.gimbal_yaw - vision_control.imu_absolution_angle.yaw) <= ALLOW_ATTACK_ERROR)) 
+	if((robot_state.shooter_id1_17mm_cooling_limit-power_heat_data_t.shooter_id1_17mm_cooling_heat>KH*robot_state.shooter_id1_17mm_cooling_rate)||fric_move.shoot_rc->rc.ch[4]>50 )//&& (fabs(vision_control.gimbal_vision_control.gimbal_pitch - vision_control.imu_absolution_angle.pitch) <= ALLOW_ATTACK_ERROR && fabs(vision_control.gimbal_vision_control.gimbal_yaw - vision_control.imu_absolution_angle.yaw) <= ALLOW_ATTACK_ERROR)) 
 	{
-		 if ( shoot_mode == SHOOT_BULLET&&trigger_motor.move_flag ==1&&flag==0)
+		if(gimbal_behaviour == GIMBAL_AUTO_ATTACK && (fabs(vision_control.gimbal_vision_control.gimbal_pitch - vision_control.imu_absolution_angle.pitch) <= ALLOW_ATTACK_ERROR && fabs(vision_control.gimbal_vision_control.gimbal_yaw - vision_control.imu_absolution_angle.yaw) <= ALLOW_ATTACK_ERROR)) 
+		{
+			trigger_motor.set_angle = rad_format(trigger_motor.set_angle + PI_Four);
+			trigger_motor.cmd_time = xTaskGetTickCount();
+			trigger_motor.move_flag =0;
+		 }
+		 else if ( shoot_mode == SHOOT_BULLET&&trigger_motor.move_flag ==1&&flag==0)
 		 {
 			trigger_motor.set_angle = rad_format(trigger_motor.set_angle + PI_Four);
 			trigger_motor.cmd_time = xTaskGetTickCount();

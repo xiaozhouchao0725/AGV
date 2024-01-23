@@ -148,7 +148,8 @@ static void gimbal_auto_move_control(fp32 *yaw, fp32 *pitch, gimbal_control_t *g
 
 /*----------------------------------结构体---------------------------*/
 //云台行为状态机
-static gimbal_behaviour_e gimbal_behaviour = GIMBAL_ZERO_FORCE;
+//static gimbal_behaviour_e gimbal_behaviour = GIMBAL_ZERO_FORCE;
+gimbal_behaviour_e gimbal_behaviour = GIMBAL_ZERO_FORCE;
 /*----------------------------------内部变量---------------------------*/
 int yaw_flag=0;  
 fp32 Pitch_Set[8]={0};
